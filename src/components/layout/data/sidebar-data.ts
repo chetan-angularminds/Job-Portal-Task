@@ -1,5 +1,6 @@
 import {
   IconBarrierBlock,
+  IconBriefcase,
   IconBrowserCheck,
   IconBug,
   IconChecklist,
@@ -75,6 +76,11 @@ export const sidebarData: SidebarData = {
           url: '/users',
           icon: IconUsers,
         },
+        {
+          title: 'Jobs',
+          url: '/jobs',
+          icon: IconBriefcase,
+        },
       ],
     },
     {
@@ -135,6 +141,20 @@ export const sidebarData: SidebarData = {
               url: '/503',
               icon: IconBarrierBlock,
             },
+          ],
+        },
+        {
+          title: 'Jobs',
+          icon: IconBriefcase,
+          items: [
+            {
+              title: 'View Jobs',
+              url: '/jobs',
+            },
+            {
+              title: 'Candidates',
+              url: '/jobs/candidates',
+            }
           ],
         },
       ],

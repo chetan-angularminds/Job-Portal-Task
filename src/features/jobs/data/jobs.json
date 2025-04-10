@@ -1,0 +1,64 @@
+{
+  "jobs": [
+    {
+      "title": "Test Job",
+      "department": "Test Interview Design",
+      "location": "Remote",
+      "openings": 3,
+      "hired": 1,
+      "applicants": [
+        {
+          "name": "Ravi Sharma",
+          "email": "ravi@example.com",
+          "status": "Interview Scheduled",
+          "appliedDate": "2025-04-07"
+        }
+      ],
+      "lastShared": "3 days ago",
+      "status": "expired",
+      "statusColor": "red"
+    },
+    {
+      "title": "React Developer",
+      "department": "Engineering",
+      "location": "Remote",
+      "openings": 5,
+      "hired": 2,
+      "applicants": [
+        {
+          "name": "Ankita Joshi",
+          "email": "ankita@example.com",
+          "status": "Offered",
+          "appliedDate": "2025-04-05"
+        },
+        {
+          "name": "Sagar Patel",
+          "email": "sagar@example.com",
+          "status": "Interview Scheduled",
+          "appliedDate": "2025-04-06"
+        }
+      ],
+      "created": "5 days ago",
+      "status": "open",
+      "statusColor": "green"
+    },
+    {
+      "title": "HR Recruiter",
+      "department": "HR Team",
+      "location": "Europe",
+      "openings": 2,
+      "hired": 1,
+      "applicants": [
+        {
+          "name": "Meena Kapoor",
+          "email": "meena@example.com",
+          "status": "Applied",
+          "appliedDate": "2025-04-03"
+        }
+      ],
+      "created": "7 days ago",
+      "status": "pending",
+      "statusColor": "orange"
+    }
+  ]
+}

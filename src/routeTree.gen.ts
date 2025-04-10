@@ -18,6 +18,7 @@ import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
+import { Route as AuthenticatedJobsRouteImport } from './routes/_authenticated/jobs/route'
 
 // Create Virtual Routes
 
@@ -43,6 +44,9 @@ const AuthenticatedTasksIndexLazyImport = createFileRoute(
 const AuthenticatedSettingsIndexLazyImport = createFileRoute(
   '/_authenticated/settings/',
 )()
+const AuthenticatedJobsIndexLazyImport = createFileRoute(
+  '/_authenticated/jobs/',
+)()
 const AuthenticatedHelpCenterIndexLazyImport = createFileRoute(
   '/_authenticated/help-center/',
 )()
@@ -63,6 +67,15 @@ const AuthenticatedSettingsAppearanceLazyImport = createFileRoute(
 )()
 const AuthenticatedSettingsAccountLazyImport = createFileRoute(
   '/_authenticated/settings/account',
+)()
+const AuthenticatedJobsCandidatesIndexLazyImport = createFileRoute(
+  '/_authenticated/jobs/candidates/',
+)()
+const AuthenticatedJobsJobDetailsJobIdIndexLazyImport = createFileRoute(
+  '/_authenticated/jobs/job-details/$jobId/',
+)()
+const AuthenticatedJobsCandidateCandidateIdIndexLazyImport = createFileRoute(
+  '/_authenticated/jobs/candidate/$candidateId/',
 )()
 
 // Create/Update Routes
@@ -171,6 +184,12 @@ const auth500Route = auth500Import.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthenticatedJobsRouteRoute = AuthenticatedJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
 const AuthenticatedUsersIndexLazyRoute =
   AuthenticatedUsersIndexLazyImport.update({
     id: '/users/',
@@ -197,6 +216,16 @@ const AuthenticatedSettingsIndexLazyRoute =
   } as any).lazy(() =>
     import('./routes/_authenticated/settings/index.lazy').then((d) => d.Route),
   )
+
+const AuthenticatedJobsIndexLazyRoute = AuthenticatedJobsIndexLazyImport.update(
+  {
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedJobsRouteRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/_authenticated/jobs/index.lazy').then((d) => d.Route),
+)
 
 const AuthenticatedHelpCenterIndexLazyRoute =
   AuthenticatedHelpCenterIndexLazyImport.update({
@@ -272,6 +301,39 @@ const AuthenticatedSettingsAccountLazyRoute =
     ),
   )
 
+const AuthenticatedJobsCandidatesIndexLazyRoute =
+  AuthenticatedJobsCandidatesIndexLazyImport.update({
+    id: '/candidates/',
+    path: '/candidates/',
+    getParentRoute: () => AuthenticatedJobsRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/jobs/candidates/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthenticatedJobsJobDetailsJobIdIndexLazyRoute =
+  AuthenticatedJobsJobDetailsJobIdIndexLazyImport.update({
+    id: '/job-details/$jobId/',
+    path: '/job-details/$jobId/',
+    getParentRoute: () => AuthenticatedJobsRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/jobs/job-details/$jobId/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthenticatedJobsCandidateCandidateIdIndexLazyRoute =
+  AuthenticatedJobsCandidateCandidateIdIndexLazyImport.update({
+    id: '/candidate/$candidateId/',
+    path: '/candidate/$candidateId/',
+    getParentRoute: () => AuthenticatedJobsRouteRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_authenticated/jobs/candidate/$candidateId/index.lazy'
+    ).then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -282,6 +344,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/jobs': {
+      id: '/_authenticated/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof AuthenticatedJobsRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
     }
     '/(auth)/500': {
       id: '/(auth)/500'
@@ -423,6 +492,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/jobs/': {
+      id: '/_authenticated/jobs/'
+      path: '/'
+      fullPath: '/jobs/'
+      preLoaderRoute: typeof AuthenticatedJobsIndexLazyImport
+      parentRoute: typeof AuthenticatedJobsRouteImport
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -444,10 +520,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/jobs/candidates/': {
+      id: '/_authenticated/jobs/candidates/'
+      path: '/candidates'
+      fullPath: '/jobs/candidates'
+      preLoaderRoute: typeof AuthenticatedJobsCandidatesIndexLazyImport
+      parentRoute: typeof AuthenticatedJobsRouteImport
+    }
+    '/_authenticated/jobs/candidate/$candidateId/': {
+      id: '/_authenticated/jobs/candidate/$candidateId/'
+      path: '/candidate/$candidateId'
+      fullPath: '/jobs/candidate/$candidateId'
+      preLoaderRoute: typeof AuthenticatedJobsCandidateCandidateIdIndexLazyImport
+      parentRoute: typeof AuthenticatedJobsRouteImport
+    }
+    '/_authenticated/jobs/job-details/$jobId/': {
+      id: '/_authenticated/jobs/job-details/$jobId/'
+      path: '/job-details/$jobId'
+      fullPath: '/jobs/job-details/$jobId'
+      preLoaderRoute: typeof AuthenticatedJobsJobDetailsJobIdIndexLazyImport
+      parentRoute: typeof AuthenticatedJobsRouteImport
+    }
   }
 }
 
 // Create and export the route tree
+
+interface AuthenticatedJobsRouteRouteChildren {
+  AuthenticatedJobsIndexLazyRoute: typeof AuthenticatedJobsIndexLazyRoute
+  AuthenticatedJobsCandidatesIndexLazyRoute: typeof AuthenticatedJobsCandidatesIndexLazyRoute
+  AuthenticatedJobsCandidateCandidateIdIndexLazyRoute: typeof AuthenticatedJobsCandidateCandidateIdIndexLazyRoute
+  AuthenticatedJobsJobDetailsJobIdIndexLazyRoute: typeof AuthenticatedJobsJobDetailsJobIdIndexLazyRoute
+}
+
+const AuthenticatedJobsRouteRouteChildren: AuthenticatedJobsRouteRouteChildren =
+  {
+    AuthenticatedJobsIndexLazyRoute: AuthenticatedJobsIndexLazyRoute,
+    AuthenticatedJobsCandidatesIndexLazyRoute:
+      AuthenticatedJobsCandidatesIndexLazyRoute,
+    AuthenticatedJobsCandidateCandidateIdIndexLazyRoute:
+      AuthenticatedJobsCandidateCandidateIdIndexLazyRoute,
+    AuthenticatedJobsJobDetailsJobIdIndexLazyRoute:
+      AuthenticatedJobsJobDetailsJobIdIndexLazyRoute,
+  }
+
+const AuthenticatedJobsRouteRouteWithChildren =
+  AuthenticatedJobsRouteRoute._addFileChildren(
+    AuthenticatedJobsRouteRouteChildren,
+  )
 
 interface AuthenticatedSettingsRouteLazyRouteChildren {
   AuthenticatedSettingsAccountLazyRoute: typeof AuthenticatedSettingsAccountLazyRoute
@@ -476,6 +596,7 @@ const AuthenticatedSettingsRouteLazyRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedJobsRouteRoute: typeof AuthenticatedJobsRouteRouteWithChildren
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
@@ -486,6 +607,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedJobsRouteRoute: AuthenticatedJobsRouteRouteWithChildren,
   AuthenticatedSettingsRouteLazyRoute:
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
@@ -501,6 +623,7 @@ const AuthenticatedRouteRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteRouteWithChildren
+  '/jobs': typeof AuthenticatedJobsRouteRouteWithChildren
   '/500': typeof errors500LazyRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
@@ -520,9 +643,13 @@ export interface FileRoutesByFullPath {
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
+  '/jobs/': typeof AuthenticatedJobsIndexLazyRoute
   '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
+  '/jobs/candidates': typeof AuthenticatedJobsCandidatesIndexLazyRoute
+  '/jobs/candidate/$candidateId': typeof AuthenticatedJobsCandidateCandidateIdIndexLazyRoute
+  '/jobs/job-details/$jobId': typeof AuthenticatedJobsJobDetailsJobIdIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -544,14 +671,19 @@ export interface FileRoutesByTo {
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
+  '/jobs': typeof AuthenticatedJobsIndexLazyRoute
   '/settings': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
+  '/jobs/candidates': typeof AuthenticatedJobsCandidatesIndexLazyRoute
+  '/jobs/candidate/$candidateId': typeof AuthenticatedJobsCandidateCandidateIdIndexLazyRoute
+  '/jobs/job-details/$jobId': typeof AuthenticatedJobsJobDetailsJobIdIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_authenticated/jobs': typeof AuthenticatedJobsRouteRouteWithChildren
   '/(auth)/500': typeof auth500Route
   '/(auth)/otp': typeof authOtpRoute
   '/(auth)/sign-in': typeof authSignInRoute
@@ -572,15 +704,20 @@ export interface FileRoutesById {
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
+  '/_authenticated/jobs/': typeof AuthenticatedJobsIndexLazyRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexLazyRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexLazyRoute
+  '/_authenticated/jobs/candidates/': typeof AuthenticatedJobsCandidatesIndexLazyRoute
+  '/_authenticated/jobs/candidate/$candidateId/': typeof AuthenticatedJobsCandidateCandidateIdIndexLazyRoute
+  '/_authenticated/jobs/job-details/$jobId/': typeof AuthenticatedJobsJobDetailsJobIdIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/jobs'
     | '/500'
     | '/otp'
     | '/sign-in'
@@ -600,9 +737,13 @@ export interface FileRouteTypes {
     | '/apps'
     | '/chats'
     | '/help-center'
+    | '/jobs/'
     | '/settings/'
     | '/tasks'
     | '/users'
+    | '/jobs/candidates'
+    | '/jobs/candidate/$candidateId'
+    | '/jobs/job-details/$jobId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
@@ -623,12 +764,17 @@ export interface FileRouteTypes {
     | '/apps'
     | '/chats'
     | '/help-center'
+    | '/jobs'
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/jobs/candidates'
+    | '/jobs/candidate/$candidateId'
+    | '/jobs/job-details/$jobId'
   id:
     | '__root__'
     | '/_authenticated'
+    | '/_authenticated/jobs'
     | '/(auth)/500'
     | '/(auth)/otp'
     | '/(auth)/sign-in'
@@ -649,9 +795,13 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
+    | '/_authenticated/jobs/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/jobs/candidates/'
+    | '/_authenticated/jobs/candidate/$candidateId/'
+    | '/_authenticated/jobs/job-details/$jobId/'
   fileRoutesById: FileRoutesById
 }
 
@@ -712,6 +862,7 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated/route.tsx",
       "children": [
+        "/_authenticated/jobs",
         "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/apps/",
@@ -719,6 +870,16 @@ export const routeTree = rootRoute
         "/_authenticated/help-center/",
         "/_authenticated/tasks/",
         "/_authenticated/users/"
+      ]
+    },
+    "/_authenticated/jobs": {
+      "filePath": "_authenticated/jobs/route.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/jobs/",
+        "/_authenticated/jobs/candidates/",
+        "/_authenticated/jobs/candidate/$candidateId/",
+        "/_authenticated/jobs/job-details/$jobId/"
       ]
     },
     "/(auth)/500": {
@@ -797,6 +958,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/help-center/index.lazy.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/jobs/": {
+      "filePath": "_authenticated/jobs/index.lazy.tsx",
+      "parent": "/_authenticated/jobs"
+    },
     "/_authenticated/settings/": {
       "filePath": "_authenticated/settings/index.lazy.tsx",
       "parent": "/_authenticated/settings"
@@ -808,6 +973,18 @@ export const routeTree = rootRoute
     "/_authenticated/users/": {
       "filePath": "_authenticated/users/index.lazy.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/jobs/candidates/": {
+      "filePath": "_authenticated/jobs/candidates/index.lazy.tsx",
+      "parent": "/_authenticated/jobs"
+    },
+    "/_authenticated/jobs/candidate/$candidateId/": {
+      "filePath": "_authenticated/jobs/candidate/$candidateId/index.lazy.tsx",
+      "parent": "/_authenticated/jobs"
+    },
+    "/_authenticated/jobs/job-details/$jobId/": {
+      "filePath": "_authenticated/jobs/job-details/$jobId/index.lazy.tsx",
+      "parent": "/_authenticated/jobs"
     }
   }
 }
