@@ -1,0 +1,32 @@
+.wrapper {
+  width: 200px;
+  position: relative;
+  overflow: visible;
+}
+.shape {
+  width: 200px;
+  height: 100px;
+  border: 1px solid;
+  background-color: white;
+  position: relative;
+  
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 37%,
+    90% 50%,
+    100% 63%,
+    100% 100%,
+    0 100%
+  );
+}
+.point {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  position: absolute;
+  top: 35px;
+  left: 175px;
+  border: 1px solid black;
+  rotate: 45deg;
+}

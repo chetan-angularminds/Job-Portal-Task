@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-
+import  "./polygon.css"
 interface CandidatePipelineProps {
   activeStage: string
   onStageChange: (stage: string) => void
@@ -31,35 +31,39 @@ export function CandidatePipeline({
     { id: 'archived', label: 'Archived', count: 1, isRejected: true },
   ]
   return (
-    < div className='flex items-center justify-between'>
-      <div className='flex overflow-x-auto rounded-md border bg-white p-1 w-fit'>
+    <div className='flex items-center justify-between'>
+      <div className='warpper flex w-fit overflow-x-auto rounded-md border bg-white p-1'>
         {stages.map((stage, index) => {
           const isActive = activeStage === stage.id
           const isLast = index === stages.length - 1
 
           return (
-            <div
-              key={stage.id}
-              onClick={() => onStageChange(stage.id)}
-              className={cn(
-                'relative flex cursor-pointer items-center justify-between rounded-md px-2 py-1 text-sm transition-colors',
-                isActive
-                  ? 'bg-violet-100 text-violet-700'
-                  : 'bg-white text-muted-foreground hover:bg-muted/50',
-                !isLast && 'mr-2'
-              )}
-            >
-              <div className='flex flex-col items-center'>
-                <span className='text-nowrap font-normal'>{stage.label}</span>
-                <span className='text-xs text-muted-foreground'>
-                  {stage.count}
-                </span>
-              </div>
+            <div className={'wrapper'+`z-[${100-index}]`}>
+              <div className={'shape'+`z-[${1000-index}]`}></div>
+              <div className='point'></div>
             </div>
+            // <div
+            //   key={stage.id}
+            //   onClick={() => onStageChange(stage.id)}
+            //   className={cn(
+            //     'relative flex cursor-pointer items-center justify-between rounded-md px-2 py-1 text-sm transition-colors',
+            //     isActive
+            //       ? 'bg-violet-100 text-violet-700'
+            //       : 'bg-white text-muted-foreground hover:bg-muted/50',
+            //     !isLast && 'mr-2'
+            //   )}
+            // >
+            //   <div className='flex flex-col items-center'>
+            //     <span className='text-nowrap font-normal'>{stage.label}</span>
+            //     <span className='text-xs text-muted-foreground'>
+            //       {stage.count}
+            //     </span>
+            //   </div>
+            // </div>
           )
         })}
       </div>
-      <div className='flex overflow-x-auto rounded-md border bg-white p-1 w-fit'>
+      <div className='flex w-fit overflow-x-auto rounded-md border bg-white p-1'>
         {data.map((stage, index) => {
           const isActive = activeStage === stage.id
           const isLast = index === stages.length - 1
