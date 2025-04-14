@@ -14,9 +14,9 @@ export function EmptyState({
   actions,
 }: EmptyStateProps) {
   return (
-    <div className='flex flex-col items-center justify-center rounded-lg border bg-gray-50 px-4 py-16 text-center'>
+    <div className='flex flex-col items-center justify-center rounded-lg border bg-gray-50 px-4 py-2 text-center'>
       {icon || (
-        <div className='mb-4'>
+        <div className='mb-1 my-0'>
           <img className='h-40 w-40' src={emptyStateImage} alt="empty" />
         </div>
       )}
