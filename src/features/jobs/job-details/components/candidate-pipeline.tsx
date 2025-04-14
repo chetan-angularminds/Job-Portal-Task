@@ -70,7 +70,7 @@ export function CandidatePipeline({
           <Separator orientation="vertical" />
           <div className='text-center w-1/2 text-xs'>
             <div className='flex items-center justify-center gap-1 p-2 text-sm'>
-              <CircleX className="text-red-500" size={15} />
+            <CircleX className='text-red-500 shrink-0' size={15} />
               Archived
             </div>
             <div>1</div>
