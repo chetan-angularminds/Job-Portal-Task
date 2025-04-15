@@ -4,20 +4,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu'
-import { SelectItem } from '@radix-ui/react-select'
 import { useParams } from '@tanstack/react-router'
 import { IconCaretDownFilled } from '@tabler/icons-react'
 import { Eye, Share2, MoreHorizontal, Plus, ChevronDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
-import { Select, SelectContent, SelectTrigger } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { mockData } from '../data/mock-data'
 import { CandidatePipeline } from './components/candidate-pipeline'
 import { CandidateTable } from './components/candidate-table'
-import { EmptyState } from './components/empty-state'
+
 
 export default function JobDetailPage() {
   const { jobId } = useParams({
@@ -25,7 +22,7 @@ export default function JobDetailPage() {
   })
   const CandidateTypes = ['All Candidates', 'Shortlisted', 'Rejected']
   const [activeTab, setActiveTab] = useState('candidates')
-  const [activeStage, setActiveStage] = useState('mcq-assessment')
+  const [activeStage, setActiveStage] = useState('MCQ Assessment')
   const [activeCandidateType, setActiveCandidateType] =
     useState('All Candidates')
   const handleCandidateTypeChange = (type: string) => {
@@ -44,11 +41,7 @@ export default function JobDetailPage() {
     { label: 'Survey Response', value: 'survey-response' },
     { label: 'Analytics', value: 'analytics' },
   ]
-  
-  
-  
-  
-  
+
   return (
     <div className=''>
       <div className='mb-6'>
@@ -60,22 +53,22 @@ export default function JobDetailPage() {
                 {job.isOnline && (
                   <Badge
                     variant='outline'
-                    className=' bg-[#9db83f] text-xs font-inter font-light py-0 px-2 uppercase text-white'
+                    className='bg-[#9db83f] px-2 py-0 font-inter text-xs font-light uppercase text-white'
                   >
-                    Online <ChevronDown className='w-4 h-4'/>
+                    Online <ChevronDown className='h-4 w-4' />
                   </Badge>
                 )}
                 {job.isPriority && (
                   <Badge
                     variant='outline'
-                    className=' bg-[#ec8686] py-0 px-2 font-inter font-light text-xs uppercase text-white'
+                    className='bg-[#ec8686] px-2 py-0 font-inter text-xs font-light uppercase text-white'
                   >
                     Priority
                   </Badge>
                 )}
               </div>
             </h1>
-            <p className='text-muted-foreground text-sm'>
+            <p className='text-sm text-muted-foreground'>
               {job.department} - {job.type} - ({job.location}) -{' '}
               {job.experience}
             </p>
@@ -108,17 +101,17 @@ export default function JobDetailPage() {
           onValueChange={setActiveTab}
           className='w-full'
         >
-          <TabsList className='h-10 w-full mb-6 justify-start rounded-none border-b bg-transparent p-0  gap-5 '>
-              {tabList.map((tab) => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className='h-10 font-light rounded-none px-0 text-xs data-[state=active]:border-b-2 data-[state=active]:border-purple-900 data-[state=active]:bg-[#f2f3f5] data-[state=active]:shadow-none'
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+          <TabsList className='mb-6 h-10 w-full justify-start gap-5 rounded-none border-b bg-transparent p-0'>
+            {tabList.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className='h-10 rounded-none px-0 text-xs font-light data-[state=active]:border-b-2 data-[state=active]:border-purple-900 data-[state=active]:bg-[#f2f3f5] data-[state=active]:shadow-none'
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
           <TabsContent
             value='candidates'
@@ -162,22 +155,12 @@ export default function JobDetailPage() {
               />
             </div>
 
-            {activeStage === 'mcq-assessment' ? (
-              <CandidateTable />
-            ) : (
-              <EmptyState
-                title='No candidates here'
-                description='There are no candidates available to show'
-                actions={
-                  <div className='flex gap-2'>
-                    <Button className='bg-violet-700 text-white hover:bg-violet-800'>
-                      Add candidate <ChevronDown className='ml-2 h-4 w-4' />
-                    </Button>
-                    <Button variant='outline'>Import from talent pool</Button>
-                  </div>
-                }
-              />
-            )}
+            
+              <>
+                <span className=''>{activeStage}</span>
+                <CandidateTable stage={activeStage} />
+              </>
+            
           </TabsContent>
 
           {/* Other tab contents would go here */}

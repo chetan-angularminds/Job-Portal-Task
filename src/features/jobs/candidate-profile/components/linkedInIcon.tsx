@@ -40,7 +40,7 @@ export function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
             opacity: 1,
           }}
           transform=' matrix(1 0 0 1 0 0) '
-          stroke-linecap='round'
+          strokeLinecap='round'
         />
         <path
           d='M 31.835 29.91 h 17.89 v 8.206 h 0.255 c 2.49 -4.72 8.576 -9.692 17.647 -9.692 C 86.514 28.424 90 40.849 90 57.007 V 89.92 H 71.357 V 60.737 c 0 -6.961 -0.121 -15.912 -9.692 -15.912 c -9.706 0 -11.187 7.587 -11.187 15.412 V 89.92 H 31.835 V 29.91 z'
@@ -56,7 +56,7 @@ export function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
             opacity: 1,
           }}
           transform=' matrix(1 0 0 1 0 0) '
-          stroke-linecap='round'
+          strokeLinecap='round'
         />
       </g>
     </svg>

@@ -1,27 +1,13 @@
+import { useState } from 'react'
 import { useParams } from '@tanstack/react-router'
-import { IconBrandWhatsapp, IconDots } from '@tabler/icons-react'
-import {
-  ArrowDownToLine,
-  Circle,
-  EllipsisVertical,
-  Facebook,
-  Globe,
-  Instagram,
-  LockKeyhole,
-  Mail,
-  Phone,
-  Twitter,
-  PhoneIcon as WhatsApp,
-} from 'lucide-react'
+import { IconBrandWhatsapp, IconCalendarEvent } from '@tabler/icons-react'
+import { ChevronDown, Globe, Mail, Phone, X } from 'lucide-react'
 import { ChevronLeft } from 'lucide-react'
 import { ChevronRight } from 'lucide-react'
 import { Pencil } from 'lucide-react'
-import { CalendarSearch } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
@@ -30,55 +16,40 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-
 import { mockData } from '../data/mock-data'
+import { XIcon } from './components/XIcon'
+import { Attachments } from './components/attachments'
+import { FacebookIcon } from './components/facebookIcon'
+import { GooglePlusIcon } from './components/googlePlusIcon'
 import { LinkedInIcon } from './components/linkedInIcon'
 import ProfileCard from './components/profilecard'
-import { XIcon } from './components/XIcon'
 import { SkypeIcon } from './components/skypeIcon'
-import { GooglePlusIcon } from './components/googlePlusIcon'
+import { Thoughts } from './components/thoughts'
+import ThreeDotsIcon from './components/threeDotsIcon'
 
 const socialIcons = [
-  { label: 'Email', icon: SkypeIcon },
+  { label: 'Skype', icon: SkypeIcon },
   { label: 'LinkedIn', icon: LinkedInIcon },
-  { label: 'Facebook', icon: Facebook },
-  { label: 'Twitter', icon: XIcon },
-  { label: 'Instagram', icon: GooglePlusIcon },
-  { label: 'WhatsApp', icon: Globe },
+  { label: 'Facebook', icon: FacebookIcon },
+  { label: 'X', icon: XIcon },
+  { label: 'Google Plus', icon: GooglePlusIcon },
+  { label: 'Website', icon: Globe },
 ]
 
 const tabList = [
-  { value: 'profile', label: 'Profile' },
-  { value: 'messages', label: 'Messages' },
-  { value: 'feedback', label: 'Feedback' },
-  { value: 'documents', label: 'Documents' },
-  { value: 'engagement', label: 'Engagement' },
-  { value: 'activity', label: 'Activity' },
-]
-
-const documentTabs = [
-  {
-    value: 'resume',
-    label: 'RESUME',
-    content: 'Naukri_ShwetaBhatnagar(5y_1m).docx',
-  },
-  {
-    value: 'application',
-    label: 'APPLICATION FORM',
-    content: 'Application form content',
-  },
-  {
-    value: 'aws',
-    label: 'AWS CREDITS MANAGEMENT REQUIREMENTS_SEEDITS_12-4-2024 (2).DOCX',
-    content: 'AWS document content',
-  },
+  { value: 'profile', label: 'Profile', component: <ProfileTab /> },
+  { value: 'messages', label: 'Messages', component: <MessagesTab /> },
+  { value: 'feedback', label: 'Feedback', component: <FeedbackTab /> },
+  { value: 'documents', label: 'Documents', component: <DocumentsTab /> },
+  { value: 'engagement', label: 'Engagement', component: <EngagementTab /> },
+  { value: 'activity', label: 'Activity', component: <ActivityTab /> },
 ]
 
 export default function CandidateProfile() {
   const candidateId = useParams({
     from: '/_authenticated/jobs/candidate/$candidateId/',
   }).candidateId
-
+  const [activeTab, setActiveTab] = useState('profile')
   const candidateList = mockData.candidates
 
   const candidate = candidateList.find(
@@ -90,11 +61,11 @@ export default function CandidateProfile() {
   }
 
   return (
-    <div className='mt-0'>
-      <div className='pl-4 pt-0 mt-0'>
+    <div className='m-0 py-0 '>
+      <div className='m-0 p-0 pt-0'>
         {/* React-dev, MCQ Assessment */}
-        <div className='py-4'>
-          <div className='flex items-center gap-2 text-sm text-muted-foreground '>
+        <div className='py-4 pl-4'>
+          <div className='flex items-center gap-2 text-sm text-muted-foreground'>
             <span className='text-violet-700'>React Developer</span>
             <span>›</span>
             <span>MCQ ASSESSMENT</span>
@@ -106,28 +77,14 @@ export default function CandidateProfile() {
               <ChevronRight size={15} className='rounded border-none' />
             </span>
             <button className='ml-auto'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                className='lucide lucide-x'
-              >
-                <path d='M18 6 6 18' />
-                <path d='m6 6 12 12' />
-              </svg>
+              <X/>
             </button>
           </div>
         </div>
 
         {/* profile */}
         <div>
-          <div className='mb-3 flex items-start p-4 gap-4 border rounded-sm'>
+          <div className='mb-0 border-b flex items-start gap-4 rounded-sm  p-4'>
             <Avatar className='h-16 w-16 text-xl text-white'>
               <AvatarFallback className='bg-green-400'>
                 {candidate.firstName[0]}
@@ -172,7 +129,7 @@ export default function CandidateProfile() {
                           <Button
                             variant='outline'
                             size='icon'
-                            className='mr-3 h-8 w-8 rounded-full bg-gray-200 text-white'
+                            className='mr-3 h-8 w-8 rounded-full bg-gray-300 text-white hover:bg-gray-400 hover:text-white'
                           >
                             <Icon className='h-4 w-4' />
                           </Button>
@@ -182,40 +139,27 @@ export default function CandidateProfile() {
                     </TooltipProvider>
                   ))}
                   <Button variant='ghost' size='icon' className='ml-1 h-6 w-6'>
-                  <Pencil className='h-3 w-3 text-[#C7C9D0]' />
-                </Button>
+                    <Pencil className='h-3 w-3 text-[#C7C9D0]' />
+                  </Button>
                 </div>
 
                 <div>
                   <div className='flex h-9 items-center gap-2'>
                     <div>
-                      <div className='mb-1 text-sm text-gray-500'>
+                      <div className='mb-1 text-xs text-gray-500'>
                         HIRING STAGE
                       </div>
                       <div className='flex items-center gap-2'>
                         <Badge
                           variant='outline'
-                          className='flex h-9 items-center gap-1 rounded-md border border-violet-800 font-light text-violet-800'
+                          className='flex h-9 items-center gap-1 rounded-md border border-kekaPurple-600 font-light text-kekaPurple-600 hover:bg-kekaPurple-100'
                         >
                           MCQ Assessment
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            width='16'
-                            height='16'
-                            viewBox='0 0 24 24'
-                            fill='none'
-                            stroke='currentColor'
-                            strokeWidth='2'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            className='lucide lucide-chevron-down'
-                          >
-                            <path d='m6 9 6 6 6-6' />
-                          </svg>
+                          <ChevronDown className='h-4 w-4 text-green-500' />
                         </Badge>
                         <Button
                           variant='outline'
-                          className='h-9 border border-red-500 font-light text-red-500'
+                          className='h-9 border border-red-500 font-light text-red-500 hover:bg-red-100 hover:text-red-600'
                         >
                           Archive
                         </Button>
@@ -228,24 +172,26 @@ export default function CandidateProfile() {
 
                     <div className='flex gap-3 text-sm'>
                       <div>
-                        <div className='mb-1 text-sm text-gray-500'>INTERACTIONS</div>
-                        <div>
-                          <Button className='bg-violet-600 text-white'>
-                            <CalendarSearch />
+                        <div className='mb-1 text-xs text-gray-500'>
+                          INTERACTIONS
+                        </div>
+                        <div className='flex items-center gap-2'>
+                          <Button className='bg-kekaPurple-600 text-xs text-white'>
+                            <IconCalendarEvent className='h-4 w-4' />
                             Schedule
                           </Button>
+                          <div className='flex items-center gap-2'>
+                            <span className='text-muted-foreground'>
+                              <Mail />
+                            </span>
+                            <span className='text-green-500'>
+                              <IconBrandWhatsapp />
+                            </span>
+                            <span className='text-muted-foreground'>
+                              <ThreeDotsIcon className='h-5 w-5' />
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div className='flex items-center gap-2'>
-                        <span className='text-muted-foreground'>
-                          <Mail />
-                        </span>
-                        <span className='text-green-500'>
-                          <IconBrandWhatsapp />
-                        </span>
-                        <span className='text-muted-foreground'>
-                          <IconDots />
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -257,125 +203,101 @@ export default function CandidateProfile() {
       </div>
       <div className='bg-[#f2f3f5]'>
         {/* tabs */}
-        <div className='py-2'>
-          <Tabs>
+        <div className='py-0'>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className='h-10 w-full justify-start rounded-none border-b bg-transparent p-0'>
               {tabList.map((tab) => (
                 <TabsTrigger
-                  key={tab.value}
+                  key={tab.label}
                   value={tab.value}
-                  className='h-10 rounded-none px-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-900 data-[state=active]:bg-[#f2f3f5] data-[state=active]:shadow-none'
+                  className='h-10 rounded-none px-4 data-[state=active]:border-b-2 data-[state=active]:border-kekaPurple-600 data-[state=active]:bg-[#f2f3f5] data-[state=active]:shadow-none'
                 >
                   {tab.label}
                 </TabsTrigger>
               ))}
             </TabsList>
+            {tabList.map(({ label, value, component }) => (
+              <TabsContent
+                key={label}
+                value={value}
+                className='min-h-[300px] rounded-md border-b py-4'
+              >
+                {component}
+              </TabsContent>
+            ))}
           </Tabs>
         </div>
 
         {/* lower section */}
-        <div className='p-3'>
-          <div className='flex gap-5'>
-            <div className='w-3/4'>
-              <ProfileCard />
-
-              <Card className='mt-7 rounded-none'>
-                <Tabs defaultValue='resume' className='mb-6'>
-                  {/* Documents section */}
-                  <div className='mt-6 flex justify-between'>
-                    <TabsList className='h-10 w-full justify-start rounded-none border-b bg-transparent p-0'>
-                      {documentTabs.map((tab) => (
-                        <TabsTrigger
-                          key={tab.value}
-                          value={tab.value}
-                          className='h-10 rounded-none px-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-900 data-[state=active]:bg-[#f2f3f5] data-[state=active]:shadow-none'
-                        >
-                          {tab.label}
-                        </TabsTrigger>
-                      ))}
-                    </TabsList>
-                    <div className='flex items-center justify-end text-nowrap border-b pr-3 text-sm text-primary'>
-                      +Attach file
-                    </div>
-                  </div>
-
-                  {/* resume tab content */}
-                  <TabsContent
-                    value='resume'
-                    className='mt-4 min-h-[300px] rounded-md border p-4'
-                  >
-                    <div className='flex justify-end gap-3 text-sm text-muted-foreground'>
-                      Naukari_ShwetaBhatnagar(5y_1m).docx{' '}
-                      <ArrowDownToLine
-                        className='text-muted-foreground'
-                        size={15}
-                      />{' '}
-                      <EllipsisVertical
-                        className='text-muted-foreground'
-                        size={15}
-                      />
-                    </div>
-                    <div className='mt-4 bg-slate-300'>
-                      <Card></Card>
-                    </div>
-                  </TabsContent>
-
-                  {/* application tab content */}
-                  <TabsContent value='application'>
-                    <div className='p-4 text-center text-muted-foreground'>
-                      Application form content
-                    </div>
-                  </TabsContent>
-
-                  {/* aws tab content */}
-                  <TabsContent value='aws'>
-                    <div className='p-4 text-center text-muted-foreground'>
-                      AWS document content
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </Card>
-            </div>
-
-            <Card className='min-h-full w-1/4 rounded-none p-4'>
-              <Input
-                placeholder='Share your thoughts and notes here...'
-                className='mb-6 rounded-none'
-              />
-
-              <div className='mb-6'>
-                <div className='flex justify-between'>
-                  <div className='flex items-center gap-2'>
-                    <div>
-                      <Avatar className='h-8 w-8 bg-purple-500'>
-                        <AvatarFallback>ST</AvatarFallback>
-                      </Avatar>
-                    </div>
-                    <div>
-                      <div className='flex items-center gap-2'>
-                        <span className='font-medium'>Smita Tayade</span>
-                      </div>
-                      <div className='flex items-center gap-2 text-xs text-muted-foreground'>
-                        <LockKeyhole size={15} className='text-red-600' />{' '}
-                        <Circle fill='gray' color='gray' size={7} />
-                        Mar 20, 2025 at 6:16 pm
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <EllipsisVertical
-                      size={17}
-                      className='text-muted-foreground'
-                    />
-                  </div>
-                </div>
-
-                <div className='pl-8 pt-1'>dfdsfsf</div>
-              </div>
-            </Card>
-          </div>
-        </div>
       </div>
+    </div>
+  )
+}
+
+function ProfileTab() {
+  return (
+    <div className='p-3'>
+      <div className='flex gap-5'>
+        <div className='w-3/4'>
+          <ProfileCard />
+          <Attachments />
+        </div>
+        <Thoughts />
+      </div>
+    </div>
+  )
+}
+function MessagesTab() {
+  return (
+    <div className='p-3'>
+      <h2 className='text-lg font-semibold'>Messages</h2>
+      <p className='text-sm text-muted-foreground'>
+        This is the Messages tab content. You can display candidate messages or communication history here.
+      </p>
+    </div>
+  )
+}
+
+function FeedbackTab() {
+  return (
+    <div className='p-3'>
+      <h2 className='text-lg font-semibold'>Feedback</h2>
+      <p className='text-sm text-muted-foreground'>
+        This is the Feedback tab content. You can display feedback or evaluations related to the candidate here.
+      </p>
+    </div>
+  )
+}
+
+function DocumentsTab() {
+  return (
+    <div className='p-3'>
+      <h2 className='text-lg font-semibold'>Documents</h2>
+      <p className='text-sm text-muted-foreground'>
+        This is the Documents tab content. You can display candidate-related documents or files here.
+      </p>
+    </div>
+  )
+}
+
+function EngagementTab() {
+  return (
+    <div className='p-3'>
+      <h2 className='text-lg font-semibold'>Engagement</h2>
+      <p className='text-sm text-muted-foreground'>
+        This is the Engagement tab content. You can display engagement metrics or activities here.
+      </p>
+    </div>
+  )
+}
+
+function ActivityTab() {
+  return (
+    <div className='p-3'>
+      <h2 className='text-lg font-semibold'>Activity</h2>
+      <p className='text-sm text-muted-foreground'>
+        This is the Activity tab content. You can display the candidate's activity timeline or logs here.
+      </p>
     </div>
   )
 }

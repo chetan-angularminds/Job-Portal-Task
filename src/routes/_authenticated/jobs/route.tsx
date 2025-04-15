@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_authenticated/jobs')({
 function RouteComponent() {
   return (
     <>
-      <Header>
+      <Header className='py-1'>
         <TopNav links={topNav} />
         <div className="ml-auto flex items-center space-x-4">
           <Search />
@@ -22,7 +22,7 @@ function RouteComponent() {
           <ProfileDropdown />
         </div>
       </Header>
-      <Main>
+      <Main className='p-0'>
         <Outlet />
       </Main>
     </>

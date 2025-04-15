@@ -40,7 +40,7 @@ export function GooglePlusIcon(props: SVGProps<SVGSVGElement>) {
             opacity: 1,
           }}
           transform=' matrix(1 0 0 1 0 0) '
-          stroke-linecap='round'
+          strokeLinecap='round'
         />
         <path
           d='M 44.55 40.666'
@@ -56,7 +56,7 @@ export function GooglePlusIcon(props: SVGProps<SVGSVGElement>) {
             opacity: 1,
           }}
           transform=' matrix(1 0 0 1 0 0) '
-          stroke-linecap='round'
+          strokeLinecap='round'
         />
         <polygon
           points='90,40.01 78.76,40.01 78.76,28.77 71.19,28.77 71.19,40.01 59.96,40.01 59.96,47.57 71.19,47.57 71.19,58.81 78.76,58.81 78.76,47.57 90,47.57 '

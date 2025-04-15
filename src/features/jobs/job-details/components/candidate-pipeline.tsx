@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Card } from '@/components/ui/card'
-import { Separator } from '@radix-ui/react-separator'
 import { CircleCheck, CircleX } from 'lucide-react'
+import { mockData } from '../../data/mock-data'
 interface CandidatePipelineProps {
   activeStage: string
   onStageChange: (stage: string) => void
@@ -11,65 +11,57 @@ export function CandidatePipeline({
   activeStage,
   onStageChange,
 }: CandidatePipelineProps) {
-  const stages = [
-    { id: 'sourced', label: 'Sourced', count: 0 },
-    { id: 'hr-screening', label: 'HR Screening', count: 0 },
-    { id: 'mcq-assessment', label: 'MCQ Assessment', count: 1 },
-    {
-      id: 'technical-interview-1',
-      label: '1st Round - Technical Interview',
-      count: 0,
-    },
-    {
-      id: 'technical-interview-2',
-      label: '2nd Round - Final Technical Interview',
-      count: 0,
-    },
-    { id: 'hr-interview', label: 'HR Interview', count: 0 },
-    { id: 'preboarding', label: 'Preboarding', count: 0 },
-  ]
+  
+  const {candidates, stages} = mockData;
+
+  const updatedStages = stages.map((stage) => {
+    const count = candidates.filter((candidate) => candidate.stage === stage.label).length;
+    return { ...stage, count };
+  });
+
   // const data = [
   //   { id: 'hired', label: 'Hired', count: 0, isSuccess: true },
   //   { id: 'archived', label: 'Archived', count: 1, isRejected: true },
   // ]
   return (
 
-    <div className='mt-1 flex justify-between'>
-        <Card className='flex flex-nowrap items-center mb-0  rounded-sm w-5/7 overflow-x-auto'>
+    <div className='mt-1 mb-5 flex justify-between'>
+        <Card className='flex flex-nowrap items-center mb-0  rounded-sm  overflow-x-auto'>
         <Breadcrumb>
             <BreadcrumbList className=' flex-nowrap text-nowrap'>
-              {stages.map((stage, idx, arr) => (
+              {updatedStages.map((stage, idx, arr) => (
                 <div className='flex  items-center text-xs' key={stage.id}>
-                  <BreadcrumbItem className="m-0 p-0 gap-0">
+                  <BreadcrumbItem  className={`text-center m-0 p-0 gap-0 ${
+                        activeStage === stage.label ? 'font-normal bg-indigo-100 text-black' : 'text-muted-foreground'
+                      } cursor-pointer hover:bg-indigo-100 p-3`}>
                     <BreadcrumbLink
-                      className={`text-center ${
-                        activeStage === stage.id ? 'font-normal bg-indigo-100 text-black' : 'text-muted-foreground'
-                      } cursor-pointer hover:bg-indigo-100 p-3`}
-                      onClick={() => onStageChange(stage.id)}
+                      
+                      onClick={() => onStageChange(stage.label)}
                     >
                       <div>{stage.label}</div>
-                      <div>{stage.id === 'mcq-assessment' ? 1 : 0}</div>
+                      <div>{stage.count}</div>
                     </BreadcrumbLink>
+                    {idx !== arr.length - 1 && <BreadcrumbSeparator className='pr-0' />}
                   </BreadcrumbItem>
-                  {idx !== arr.length - 1 && <BreadcrumbSeparator />}
+                  
                 </div>
               ))}
             </BreadcrumbList>
           </Breadcrumb>
         </Card>
-        <Card className='flex rounded-sm w-1/7'>
+        <Card className='flex rounded-sm '>
 
-          <div className=' text-center w-1/2 text-xs'>
-            <div className='flex items-center justify-center gap-1 p-2 text-sm'>
+          <div className=' text-center w-1/2 text-xs border-r-[0.5px]'>
+            <div className='flex items-center justify-center  gap-1 p-2 text-xs'>
               <CircleCheck className="text-lime-600" size={15} />
               Hired
             </div>
 
             <div>0</div>
           </div>
-          <Separator orientation="vertical" />
-          <div className='text-center w-1/2 text-xs'>
-            <div className='flex items-center justify-center gap-1 p-2 text-sm'>
+          
+          <div className='text-center w-1/2 border-l-[0.5px] text-xs'>
+            <div className='flex items-center justify-center gap-1 p-2 text-xs'>
             <CircleX className='text-red-500 shrink-0' size={15} />
               Archived
             </div>
