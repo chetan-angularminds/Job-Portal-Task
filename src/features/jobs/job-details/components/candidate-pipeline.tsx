@@ -25,7 +25,7 @@ export function CandidatePipeline({
   // ]
   return (
 
-    <div className='mt-1 mb-5 flex justify-between'>
+    <div className='mt-1 mb-5 flex justify-between focus:outline-none'>
         <Card className='flex flex-nowrap items-center mb-0  rounded-sm  overflow-x-auto'>
         <Breadcrumb>
             <BreadcrumbList className=' flex-nowrap text-nowrap'>

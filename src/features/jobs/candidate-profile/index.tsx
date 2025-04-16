@@ -1,7 +1,8 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect, useState } from 'react'
 import { useParams } from '@tanstack/react-router'
 import { IconBrandWhatsapp, IconCalendarEvent } from '@tabler/icons-react'
-import { ChevronDown, Globe, Mail, Phone, X } from 'lucide-react'
+import { ChevronDown, Globe, Mail, Phone } from 'lucide-react'
 import { ChevronLeft } from 'lucide-react'
 import { ChevronRight } from 'lucide-react'
 import { Pencil } from 'lucide-react'
@@ -45,46 +46,96 @@ const tabList = [
   { value: 'activity', label: 'Activity', component: <ActivityTab /> },
 ]
 
-export default function CandidateProfile() {
-  const candidateId = useParams({
-    from: '/_authenticated/jobs/candidate/$candidateId/',
-  }).candidateId
-  const [activeTab, setActiveTab] = useState('profile')
-  const candidateList = mockData.candidates
+export default function CandidateProfile({
+  candidateId: propCandidateId,
+  isPopup = false,
+  jobName,
+  stage,
+}: {
+  candidateId?: string | null
+  isPopup?: boolean
+  jobName?: string
+  stage?: string
+}) {
+  const idFromParams = !isPopup
+    ? (useParams({
+        from: '/_authenticated/jobs/candidate/$candidateId/',
+      }).candidateId ?? null)
+    : null
 
-  const candidate = candidateList.find(
-    (candidate) => candidate.id === candidateId
+  const [candidateId, setCandidateId] = useState(
+    propCandidateId || idFromParams
   )
+  const [activeTab, setActiveTab] = useState('profile')
+
+  const candidateList = stage
+    ? mockData.candidates.filter((candidate) => {
+        return candidate.stage === stage
+      })
+    : mockData.candidates
+
+  const [candidate, setCandidate] = useState(
+    candidateList.find((candidate) => candidate.id === candidateId)
+  )
+  useEffect(() => {
+    if (candidateId) {
+      const foundCandidate = candidateList.find(
+        (candidate) => candidate.id === candidateId
+      )
+      setCandidate(foundCandidate)
+    }
+  }, [candidateId])
+
+  const handleCandidateChange = (value: number) => {
+    const prevIndex = candidateList.findIndex((c) => c.id === candidateId)
+    const newIndex =
+      (prevIndex + value + candidateList.length) % candidateList.length
+    setCandidateId(candidateList[newIndex].id)
+  }
 
   if (!candidate) {
     return <div>Candidate not found</div>
   }
 
   return (
-    <div className='m-0 py-0 '>
+    <div className='m-0 py-0'>
       <div className='m-0 p-0 pt-0'>
         {/* React-dev, MCQ Assessment */}
         <div className='py-4 pl-4'>
           <div className='flex items-center gap-2 text-sm text-muted-foreground'>
-            <span className='text-violet-700'>React Developer</span>
+            <span className='text-violet-700'>{jobName}</span>
             <span>›</span>
-            <span>MCQ ASSESSMENT</span>
+            <span>{stage}</span>
             <span>
-              <ChevronLeft size={15} className='rounded border-none' />
+              <ChevronLeft
+                size={15}
+                className='rounded border-none hover:cursor-pointer'
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleCandidateChange(-1)
+                }}
+              />
             </span>
-            <span className='text-black'>1 of 1</span>
+            <span className='text-black'>
+              {candidateList.findIndex((c) => c.id === candidateId) + 1} of{' '}
+              {candidateList.length}
+            </span>
             <span>
-              <ChevronRight size={15} className='rounded border-none' />
+              <ChevronRight
+                size={15}
+                className='rounded border-none hover:cursor-pointer'
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleCandidateChange(1)
+                }}
+              />
             </span>
-            <button className='ml-auto'>
-              <X/>
-            </button>
           </div>
         </div>
 
         {/* profile */}
         <div>
-          <div className='mb-0 border-b flex items-start gap-4 rounded-sm  p-4'>
+          <div className='mb-0 flex items-start gap-4 rounded-sm border-b p-4'>
             <Avatar className='h-16 w-16 text-xl text-white'>
               <AvatarFallback className='bg-green-400'>
                 {candidate.firstName[0]}
@@ -252,7 +303,8 @@ function MessagesTab() {
     <div className='p-3'>
       <h2 className='text-lg font-semibold'>Messages</h2>
       <p className='text-sm text-muted-foreground'>
-        This is the Messages tab content. You can display candidate messages or communication history here.
+        This is the Messages tab content. You can display candidate messages or
+        communication history here.
       </p>
     </div>
   )
@@ -263,7 +315,8 @@ function FeedbackTab() {
     <div className='p-3'>
       <h2 className='text-lg font-semibold'>Feedback</h2>
       <p className='text-sm text-muted-foreground'>
-        This is the Feedback tab content. You can display feedback or evaluations related to the candidate here.
+        This is the Feedback tab content. You can display feedback or
+        evaluations related to the candidate here.
       </p>
     </div>
   )
@@ -274,7 +327,8 @@ function DocumentsTab() {
     <div className='p-3'>
       <h2 className='text-lg font-semibold'>Documents</h2>
       <p className='text-sm text-muted-foreground'>
-        This is the Documents tab content. You can display candidate-related documents or files here.
+        This is the Documents tab content. You can display candidate-related
+        documents or files here.
       </p>
     </div>
   )
@@ -285,7 +339,8 @@ function EngagementTab() {
     <div className='p-3'>
       <h2 className='text-lg font-semibold'>Engagement</h2>
       <p className='text-sm text-muted-foreground'>
-        This is the Engagement tab content. You can display engagement metrics or activities here.
+        This is the Engagement tab content. You can display engagement metrics
+        or activities here.
       </p>
     </div>
   )
@@ -296,7 +351,8 @@ function ActivityTab() {
     <div className='p-3'>
       <h2 className='text-lg font-semibold'>Activity</h2>
       <p className='text-sm text-muted-foreground'>
-        This is the Activity tab content. You can display the candidate's activity timeline or logs here.
+        This is the Activity tab content. You can display the candidate's
+        activity timeline or logs here.
       </p>
     </div>
   )

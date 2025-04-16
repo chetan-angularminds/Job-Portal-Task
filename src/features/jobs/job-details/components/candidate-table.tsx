@@ -12,7 +12,7 @@ import { mockData } from '../../data/mock-data'
 import { DataTable } from './data-table'
 import { EmptyState } from './empty-state'
 
-export function CandidateTable({ stage }: { stage: string }) {
+export function CandidateTable({ stage, jobName }: { stage: string, jobName: string }) {
   const { candidates, filters } = mockData
 
   // Filter to only show candidates in MCQ Assessment stage
@@ -145,7 +145,7 @@ export function CandidateTable({ stage }: { stage: string }) {
           </div>
 
           <div className='w-full p-0'>
-            <DataTable candidates={filteredCandidates} />
+            <DataTable candidates={filteredCandidates} stage={stage} jobName={jobName} />
 
             <div className='flex items-center justify-end text-xs text-muted-foreground'>
               <div>

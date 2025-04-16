@@ -43,9 +43,9 @@ export default function JobDetailPage() {
   ]
 
   return (
-    <div className=''>
-      <div className='mb-6'>
-        <div className='mb-2 flex items-center justify-between'>
+    <div className='!focus:outline-none'>
+      <div className='mb-6 !focus:outline-none'>
+        <div className='mb-2 flex items-center justify-between focus:outline-none'>
           <div>
             <h1 className='flex items-center gap-2 text-xl font-normal text-violet-700'>
               {job.title}
@@ -99,7 +99,7 @@ export default function JobDetailPage() {
           defaultValue='candidates'
           value={activeTab}
           onValueChange={setActiveTab}
-          className='w-full'
+          className='w-full !focus:outline-none'
         >
           <TabsList className='mb-6 h-10 w-full justify-start gap-5 rounded-none border-b bg-transparent p-0'>
             {tabList.map((tab) => (
@@ -115,10 +115,10 @@ export default function JobDetailPage() {
 
           <TabsContent
             value='candidates'
-            className='mt-1 focus:border-none focus:outline-none focus:ring-0 focus:ring-offset-0'
+            className='mt-1 !focus:border-none !focus:outline-none focus:ring-0 focus:ring-offset-0'
           >
-            <div className='my-2'>
-              <div className='my-1 text-black'>
+            <div className='my-2 !focus:outline-none'>
+              <div className='my-1 text-black !focus:outline-none'>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -152,13 +152,14 @@ export default function JobDetailPage() {
               <CandidatePipeline
                 activeStage={activeStage}
                 onStageChange={setActiveStage}
+                
               />
             </div>
 
             
               <>
                 <span className=''>{activeStage}</span>
-                <CandidateTable stage={activeStage} />
+                <CandidateTable stage={activeStage} jobName={job.title} />
               </>
             
           </TabsContent>
